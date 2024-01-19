@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from lightgbm import LGBMRegressor
 from xgboost import XGBRegressor
-# from catboost import CatBoostRegressor
+from catboost import CatBoostRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 df = pd.read_csv('Spotify_Youtube.csv')
@@ -31,17 +31,18 @@ X_train, X_test, y_train, y_test = train_test_split(scaled_features, target, tes
 # Initialize the regressors
 lgbm = LGBMRegressor()
 xgb = XGBRegressor()
-# catboost = CatBoostRegressor(verbose=0)  # 'verbose=0' to prevent a lot of output
+catboost = CatBoostRegressor(verbose=0)
+  # 'verbose=0' to prevent a lot of output
 
 # Fit the models
 lgbm.fit(X_train, y_train)
 xgb.fit(X_train, y_train)
-# catboost.fit(X_train, y_train)
+catboost.fit(X_train, y_train)
 
 # Make predictions
 predictions_lgbm = lgbm.predict(X_test)
 predictions_xgb = xgb.predict(X_test)
-# predictions_catboost = catboost.predict(X_test)
+predictions_catboost = catboost.predict(X_test)
 
 # Evaluate the models
 mae_lgbm = mean_absolute_error(y_test, predictions_lgbm)
@@ -52,9 +53,9 @@ mae_xgb = mean_absolute_error(y_test, predictions_xgb)
 mse_xgb = mean_squared_error(y_test, predictions_xgb)
 r2_xgb = r2_score(y_test, predictions_xgb)
 
-# mae_catboost = mean_absolute_error(y_test, predictions_catboost)
-# mse_catboost = mean_squared_error(y_test, predictions_catboost)
-# r2_catboost = r2_score(y_test, predictions_catboost)
+mae_catboost = mean_absolute_error(y_test, predictions_catboost)
+mse_catboost = mean_squared_error(y_test, predictions_catboost)
+r2_catboost = r2_score(y_test, predictions_catboost)
 
 print('\n\n')
 print('LightGBM - Danceability Prediction:')
@@ -68,6 +69,6 @@ print(f'MSE: {mse_xgb}')
 print(f'R-squared: {r2_xgb}')
 print('------')
 print('CatBoost - Danceability Prediction:')
-# print(f'MAE: {mae_catboost}')
-# print(f'MSE: {mse_catboost}')
-# print(f'R-squared: {r2_catboost}')
+print(f'MAE: {mae_catboost}')
+print(f'MSE: {mse_catboost}')
+print(f'R-squared: {r2_catboost}')
